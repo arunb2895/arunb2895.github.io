@@ -245,6 +245,31 @@ mark{background:rgba(39,196,255,.25);color:var(--ink);border-radius:2px;box-shad
 @media (max-width:760px){.contact{grid-template-columns:1fr}}
 footer{padding-block:2rem;color:var(--muted);font-size:.8rem;font-family:var(--f-mono)}
 footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+/* ===== Frosted glass layer ===== */
+:root{--glass:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.035));--glass-b:rgba(255,255,255,.14);
+  --glass-sh:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.04),0 10px 36px -8px rgba(0,0,0,.55);--blur:blur(18px) saturate(170%)}
+.lit,.pubs,.timeline,.two > div,.nav,.hint{-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
+.lit{background:var(--glass);border:1px solid var(--glass-b);border-radius:20px;box-shadow:var(--glass-sh)}
+.lit::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.12) 0%,transparent 28%,transparent 70%,rgba(39,196,255,.06) 100%)}
+.lit:hover{border-color:rgba(255,46,151,.5);box-shadow:var(--glass-sh),0 0 0 1px rgba(255,46,151,.2),0 14px 44px -10px rgba(255,46,151,.35)}
+.nav{background:rgba(8,8,16,.42);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:inset 0 -1px 0 rgba(255,255,255,.04)}
+.pubs,.timeline,.two > div{background:var(--glass);border:1px solid var(--glass-b);border-radius:20px;box-shadow:var(--glass-sh)}
+.pubs{padding:.25rem 1rem}
+.pubs .pub:first-child{border-top:0}
+.pub{border-radius:12px}
+.timeline{padding:.5rem 1.25rem}
+.timeline::before{left:calc(1.25rem + 7.5rem)}
+.timeline li:last-child{border-bottom:0}
+.two > div{padding:1.25rem 1.4rem}
+.list li:first-child{border-top:0}
+.tab,.chip,.pill,.copy,.btn:not(.primary),.pub-tools input[type=search]{background:rgba(255,255,255,.06);-webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%);border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.btn:not(.primary){border-color:rgba(39,196,255,.55);border-radius:12px}
+.btn.primary{border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),var(--glow-p)}
+.tab[aria-selected="true"]{background:rgba(255,46,151,.14)}
+.chip[aria-pressed="true"]{background:rgba(39,196,255,.14)}
+.hint{background:rgba(8,8,16,.45);border-color:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+@media (max-width:560px){.timeline::before{left:calc(1.25rem + 4px)}}
 </style>
 </head>
 <body>
