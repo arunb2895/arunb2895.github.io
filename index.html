@@ -270,6 +270,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 .chip[aria-pressed="true"]{background:rgba(39,196,255,.14)}
 .hint{background:rgba(8,8,16,.45);border-color:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
 @media (max-width:560px){.timeline::before{left:calc(1.25rem + 4px)}}
+.methods-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,22rem);gap:1.5rem 2rem;align-items:start}
+.methods{grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr))}
+.m-hint{margin:0 0 1rem;color:var(--muted);font-size:.875rem}
+.pill{cursor:pointer;font:inherit;font-size:.83rem;text-align:left}
+.pill[aria-pressed="true"]{color:var(--pink);border-color:var(--pink);background:rgba(255,46,151,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),var(--glow-p)}
+.m-info{position:sticky;top:5rem;padding:1.4rem 1.5rem;animation:rise .35s ease}
+.m-info .m-cat{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.m-info h4{font-family:var(--f-display);font-weight:500;font-size:1.1rem;margin:.35rem 0 .9rem;line-height:1.3}
+.m-info .m-k{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pink);margin-top:.6rem}
+.m-info p{margin:.25rem 0 0;color:#D6D8EE;font-size:.92rem;line-height:1.55}
+@media (max-width:900px){.methods-wrap{grid-template-columns:1fr}.m-info{position:relative;top:0}}
 </style>
 </head>
 <body>
@@ -390,8 +401,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
       <div><div class="eyebrow">2016</div><div class="deg">BS, Genetic Engineering</div><div class="sch">SRM University, India</div></div>
     </div>
     <div style="margin-top:3rem">
-      <div class="eyebrow" style="margin-bottom:1rem">Methods</div>
-      <div class="methods" id="methods"></div>
+      <div class="eyebrow" style="margin-bottom:.4rem">Methods</div>
+      <p class="m-hint">Tap any method to see what it is and what it is used for.</p>
+      <div class="methods-wrap">
+        <div class="methods" id="methods"></div>
+        <aside class="m-info lit" id="mInfo" aria-live="polite"></aside>
+      </div>
     </div>
     <div style="margin-top:3rem">
       <div class="eyebrow" style="margin-bottom:1rem">Code</div>
@@ -543,13 +558,47 @@ $("#q").addEventListener("input",renderPubs);$("#firstOnly").addEventListener("c
 
 /* ---------- methods ---------- */
 const methods={
- "Cell culture":["Human primary enteric neurons","Mouse primary enteric neurons","IM-FEN enteric neuronal line","NIH3T3 fibroblasts","HaCaT keratinocytes"],
- "Molecular biology":["Western blotting","Immunofluorescence","Immunohistochemistry","Whole-mount immunostaining","RNA / DNA / protein extraction","cDNA synthesis & RT-qPCR","ELISA & biochemical assays","AAV gene therapy: design, packaging, delivery"],
- "Imaging":["Confocal microscopy","Fluorescence microscopy","Brightfield microscopy","iDISCO tissue clearing"],
- "In vivo":["Dietary mouse models","Oral gavage","SC, IV, IP, retro-orbital & tail-vein injection","Whole-gut transit","Colon bead expulsion","Histological sectioning"],
- "Analysis":["R / RStudio","GraphPad Prism","ImageJ / Fiji","Microsoft Office"]
+ "Cell culture":[
+  ["Human primary enteric neurons","Neurons isolated from the muscle layers of human intestine and grown in culture.","Tests whether responses seen in mouse neurons also occur in human enteric neurons."],
+  ["Mouse primary enteric neurons","Enteric neurons and glia isolated from the muscle layers of the mouse gut and grown in culture.","Measures neuronal survival, mitochondrial function and cell death after exposure to stressors such as saturated fatty acids."],
+  ["IM-FEN enteric neuronal line","A conditionally immortalized mouse fetal enteric neuronal cell line. It divides at a permissive temperature and differentiates into neurons when shifted.","Provides a scalable, reproducible enteric neuron model for screening treatments before confirming in primary cells."],
+  ["NIH3T3 fibroblasts","A widely used mouse embryonic fibroblast cell line.","Serves as a non-neuronal comparison cell type."],
+  ["HaCaT keratinocytes","A spontaneously immortalized human skin keratinocyte cell line.","Used in doctoral work on UV-B injury and protection by skin bacteria."]],
+ "Molecular biology":[
+  ["Western blotting","Proteins are separated by size on a gel, transferred to a membrane and detected with specific antibodies.","Quantifies the amount of a target protein, for example markers of cell death or mitochondrial function."],
+  ["Immunofluorescence","Fluorescently tagged antibodies label specific proteins in cells or tissue, which are then imaged by microscopy.","Shows where a protein is located and how much is present in individual neurons."],
+  ["Immunohistochemistry","Antibody staining of tissue sections developed with an enzyme-based color reaction and viewed under a standard light microscope.","Detects and localizes proteins in fixed intestinal tissue."],
+  ["Whole-mount immunostaining","Staining of intact sheets of gut muscle tissue rather than thin slices, so the full enteric neuronal network stays visible.","Counts neurons per ganglion and maps the structure of the enteric nervous system."],
+  ["RNA / DNA / protein extraction","Isolation of nucleic acids and proteins from cells or tissue.","Prepares material for gene expression, genotyping and protein assays."],
+  ["cDNA synthesis & RT-qPCR","RNA is converted to complementary DNA, then target genes are amplified and measured in real time.","Measures how strongly specific genes are expressed under different conditions."],
+  ["ELISA & biochemical assays","ELISA uses antibodies in a plate format to measure a specific protein. Biochemical assays measure molecules or enzyme activity directly.","Quantifies cytokines, iron, lipid peroxidation products and other markers in tissue, serum or culture media."],
+  ["AAV gene therapy: design, packaging, delivery","Adeno-associated virus (AAV) vectors are engineered to carry a gene into target cells. Work covers vector design, virus production and delivery in animals.","Changes gene expression in specific cells to test whether a pathway causes a disease feature."]],
+ "Imaging":[
+  ["Confocal microscopy","A laser scanning microscope that removes out-of-focus light, producing sharp optical sections that can be stacked into 3D images.","High-resolution imaging of enteric neurons, ganglia and subcellular structures."],
+  ["Fluorescence microscopy","Widefield imaging of fluorescent labels in cells and tissue.","Fast imaging and quantification of stained cultures and sections."],
+  ["Brightfield microscopy","Imaging with transmitted white light, used for stained tissue sections.","Evaluates tissue structure and immunohistochemistry staining."],
+  ["iDISCO tissue clearing","A solvent-based method that makes whole tissues transparent after antibody labeling, so they can be imaged in 3D without cutting.","Visualizes the enteric nervous system across intact segments of gut."]],
+ "In vivo":[
+  ["Dietary mouse models","Mice are fed defined diets, such as a Western-style high-fat diet compared with a control diet.","Studies how diet affects enteric neurons and gut function over time."],
+  ["Oral gavage","A precise dose is delivered directly into the stomach through a feeding tube.","Gives controlled oral doses of test substances."],
+  ["SC, IV, IP, retro-orbital & tail-vein injection","Routes for giving compounds or vectors: under the skin (SC), into a vein (IV, tail vein, retro-orbital sinus) or into the abdominal cavity (IP).","Delivers treatments, tracers and gene therapy vectors by the route each one needs."],
+  ["Whole-gut transit","Mice receive a non-absorbable colored dye by mouth, and the time until it appears in the stool is recorded.","Measures overall gastrointestinal motility."],
+  ["Colon bead expulsion","A small bead is placed in the distal colon and the time taken to expel it is recorded.","Measures colonic motility, which depends on enteric neuron function."],
+  ["Histological sectioning","Fixed tissue is embedded and cut into thin slices for staining.","Prepares intestinal tissue for microscopy and pathology scoring."]],
+ "Analysis":[
+  ["R / RStudio","A programming language and environment for statistics and data visualization.","Statistical analysis, sequencing data analysis and publication figures."],
+  ["GraphPad Prism","Software for statistical testing and scientific graphing.","Group comparisons and figure preparation."],
+  ["ImageJ / Fiji","Open-source software for scientific image analysis.","Counts neurons and quantifies staining intensity in microscopy images."],
+  ["Microsoft Office","Word, Excel and PowerPoint.","Writing, data organization and presentations."]]
 };
-$("#methods").innerHTML=Object.entries(methods).map(([h,xs])=>`<div><h3>${h}</h3><div class="pills">${xs.map(x=>`<span class="pill">${x}</span>`).join("")}</div></div>`).join("");
+const flat=[];
+$("#methods").innerHTML=Object.entries(methods).map(([h,xs])=>`<div><h3>${h}</h3><div class="pills">${xs.map(x=>{flat.push([h,...x]);return `<button type="button" class="pill" data-i="${flat.length-1}" aria-controls="mInfo" aria-pressed="false">${x[0]}</button>`}).join("")}</div></div>`).join("");
+function showMethod(i){const [cat,name,what,use]=flat[i];
+  document.querySelectorAll("#methods .pill").forEach(b=>b.setAttribute("aria-pressed",b.dataset.i==i));
+  $("#mInfo").innerHTML=`<div class="m-cat">${cat}</div><h4>${name}</h4><div class="m-k">What it is</div><p>${what}</p><div class="m-k">What it is used for</div><p>${use}</p>`;}
+$("#methods").addEventListener("click",e=>{const b=e.target.closest(".pill");if(!b)return;showMethod(+b.dataset.i);
+  if(innerWidth<900)$("#mInfo").scrollIntoView({behavior:still?"auto":"smooth",block:"nearest"})});
+showMethod(3);
 
 /* ---------- talks ---------- */
 const talks={
