@@ -598,7 +598,7 @@ function showMethod(i){const [cat,name,what,use]=flat[i];
   $("#mInfo").innerHTML=`<div class="m-cat">${cat}</div><h4>${name}</h4><div class="m-k">What it is</div><p>${what}</p><div class="m-k">What it is used for</div><p>${use}</p>`;}
 $("#methods").addEventListener("click",e=>{const b=e.target.closest(".pill");if(!b)return;showMethod(+b.dataset.i);
   if(innerWidth<900)$("#mInfo").scrollIntoView({behavior:still?"auto":"smooth",block:"nearest"})});
-showMethod(3);
+showMethod(8);
 
 /* ---------- talks ---------- */
 const talks={
